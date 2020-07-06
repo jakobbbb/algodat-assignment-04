@@ -1,6 +1,9 @@
-# cpp-template
+# algodat 04
 
-Template repoisitory for a C++ project with `cmake` and `catch2`.
+Task:  Implement an algorithm for finding the closest pair of points.
+
+Example plotted with `gnuplot`:
+![30 random points](doc/plot_0.svg)
 
 ## building
 ```sh
