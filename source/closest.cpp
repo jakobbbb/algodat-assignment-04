@@ -8,10 +8,6 @@
 #include "closest.hpp"
 
 
-bool operator<(point const& lhs, point const& rhs) {
-  return lhs.x < rhs.x;
-}
-
 float distance(std::pair<point, point> const& points) {
   auto [lhs, rhs] = points;
   return std::sqrt(std::pow(rhs.x - lhs.x, 2) + std::pow(rhs.y - lhs.y, 2));
@@ -60,7 +56,7 @@ std::pair<point, point> combine(std::vector<point> y,
                                 std::size_t l_x,
                                 std::pair<point, point> pair_1,
                                 std::pair<point, point> pair_2) {
-  y = mergesort(y);  // dunno
+  // y = mergesort_y(y);
   auto d1 = distance(pair_1);
   auto d2 = distance(pair_2);
   auto pair_3 = pair_2;
@@ -75,10 +71,10 @@ std::pair<point, point> combine(std::vector<point> y,
       y_prime.push_back(p);
     }
   }
-  y_prime = mergesort(y_prime);  // dunno
+  y_prime = mergesort_y(y_prime);
   for (std::size_t i = 0; i < y.size(); ++i) {
-    std::size_t j = 0;
-    while (j <= 6 && i + j - 2 <= y_prime.size()) {
+    std::size_t j = 1;
+    while (j <= 7 && i + j - 2 <= y_prime.size()) {
       auto pair_4 = std::make_pair(y_prime[i], y_prime[i + j]);
       auto d3 = distance(pair_4);
       if (d3 < d) {
@@ -97,7 +93,8 @@ std::pair<point, point> closest(std::vector<point> x,
     return std::make_pair(x[0], x[1]);
   if (x.size() == 3)
     return closest_naive(x);
-  x = mergesort(x);
+  x = mergesort_x(x);
+  y = mergesort_y(y);
   auto m = x.size() / 2;
   auto l_x = (x[m].x + x[m + 1].x) / 2;
   auto x_l = std::vector<point>(x.begin(), x.begin() + m);
@@ -111,7 +108,7 @@ std::pair<point, point> closest(std::vector<point> x,
   auto d3 = distance(pair_3);
   if (d1 <= d2 && d1 <= d3)
     return pair_1;
-  else if (d2 <= d1 && d1 <= d3)
+  else if (d2 <= d1 && d2 <= d3)
     return pair_2;
   else
     return pair_3;

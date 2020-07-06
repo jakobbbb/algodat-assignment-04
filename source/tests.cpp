@@ -26,13 +26,15 @@ TEST_CASE("closest points", "[closest_points]") {
   }
   GIVEN("n-element vectors of points") {
     for (int i = 3; i <= 100; ++i) {
-      auto const p = random_points(i, {0.f, 0.f}, {1.f, 1.f});
+      std::cout << i << '\n';
+      auto const p = random_points(i);
       REQUIRE(i == p.size());
       REQUIRE(distance(closest_naive(p)) == distance(closest(p)));
     }
   }
   GIVEN("n-element vectors of points with negative coordinates") {
     for (int i = 3; i <= 100; ++i) {
+      std::cout << i << '\n';
       auto p = random_points(i, {-42.23f, -23.42f}, {12.34f, 98.76f});
       REQUIRE(i == p.size());
       REQUIRE(distance(closest_naive(p)) == distance(closest(p)));

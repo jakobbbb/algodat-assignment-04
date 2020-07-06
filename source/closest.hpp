@@ -10,9 +10,6 @@ struct point {
   float y;
 };
 
-/** Used for sorting with mergesort. */
-bool operator<(point const& lhs, point const& rhs);
-
 /** Print a point. */
 std::ostream& operator<<(std::ostream& os, point const& p);
 
