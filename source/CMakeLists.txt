@@ -1,5 +1,5 @@
-add_executable(helloworld
-    helloworld.cpp
+add_executable(divconq
+    divconq.cpp
     )
 
 add_executable(tests
