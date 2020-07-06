@@ -45,6 +45,26 @@ std::ostream& print_points(std::ostream& os, std::vector<point> const& points) {
   return os;
 }
 
+/**
+ * Naive O(n^2) algorithm for finding two closest points.
+ * Used for verifying correctness of the efficient algorithm.
+ */
+std::pair<point, point> closest_naive(std::vector<point> points) {
+  if (points.size() < 2) {
+    throw "Must have at least two points!";
+  }
+  auto closest = std::make_pair(points[0], points[1]);
+  for (auto const& p : points) {
+    for (auto const& q : points) {
+      auto pq = std::make_pair(p, q);
+      if (distance(pq) > 0 && distance(pq) < distance(closest)) {
+        closest = pq;
+      }
+    }
+  }
+  return closest;
+}
+
 std::pair<point, point> combine(std::vector<point> y,
                                 std::size_t l_x,
                                 std::pair<point, point> pair_1,
@@ -67,8 +87,8 @@ std::pair<point, point> combine(std::vector<point> y,
     std::size_t j = 0;
     while (j <= 6 && i + j - 2 <= y_prime.size()) {
       auto pair_4 = std::make_pair(y_prime[i], y_prime[i + j]);
-      auto d3 = distance(pair_4);  // unused:  this makes *no* sense
-      if (d1 < d) {
+      auto d3 = distance(pair_4);
+      if (d3 < d) {
         pair_3 = pair_4;
         d = d1;
       }
@@ -80,7 +100,10 @@ std::pair<point, point> combine(std::vector<point> y,
 
 std::pair<point, point> find_closest_points(std::vector<point> x,
                                             std::vector<point> y) {
-  // can this even terminate?
+  if (x.size() == 2)
+    return std::make_pair(x[0], x[1]);
+  if (x.size() == 3)
+    return closest_naive(x);
   auto m = x.size() / 2;
   auto l_x = (x[m].x + x[m + 1].x) / 2;
   auto x_l = std::vector<point>(x.begin(), x.begin() + m);
@@ -100,35 +123,19 @@ std::pair<point, point> find_closest_points(std::vector<point> x,
 }
 
 std::pair<point, point> find_closest_points(std::vector<point> points) {
-  // not to sure about this one
-  return find_closest_points(points, points);
-}
-
-/**
- * Naive O(n^2) algorithm for finding two closest points.
- * Used for verifying correctness of the efficient algorithm.
- */
-std::pair<point, point> closest_naive(std::vector<point> points) {
-  if (points.size() < 2) {
-    throw "Must have at least two points!";
-  }
-  auto closest = std::make_pair(points[0], points[1]);
-  for (auto const& p : points) {
-    for (auto const& q : points) {
-      auto pq = std::make_pair(p, q);
-      if (distance(pq) > 0 && distance(pq) < distance(closest)) {
-        closest = pq;
-      }
-    }
-  }
-  return closest;
+  return find_closest_points(points, {});
 }
 
 int main() {
   auto points = random_points(30, {0.f, 0.f}, {1.f, 1.f});
   print_points(std::cout, points);
+  auto naive = closest_naive(points);
+  std::cout << "Closest points (naive):\t" << naive.first.x << " "
+            << naive.first.y << ", " << naive.second.x << " " << naive.second.y
+            << " (d=" << distance(naive) << ")\n";
   auto closest = find_closest_points(points);
-  std::cout << "Closest points: " << closest.first.x << " " << closest.first.y
-            << ", " << closest.second.x << " " << closest.second.y << "\n";
+  std::cout << "Closest points: (d&q):\t" << closest.first.x << " "
+            << closest.first.y << ", " << closest.second.x << " "
+            << closest.second.y << " (d=" << distance(closest) << ")\n";
   return 0;
 }
