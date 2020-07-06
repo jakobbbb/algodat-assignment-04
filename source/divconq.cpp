@@ -45,6 +45,65 @@ std::ostream& print_points(std::ostream& os, std::vector<point> const& points) {
   return os;
 }
 
+std::pair<point, point> combine(std::vector<point> y,
+                                std::size_t l_x,
+                                std::pair<point, point> pair_1,
+                                std::pair<point, point> pair_2) {
+  auto d1 = distance(pair_1);
+  auto d2 = distance(pair_2);
+  auto pair_3 = pair_2;
+  auto d = d2;
+  if (d1 < d2) {
+    pair_3 = pair_1;
+    d = d1;
+  }
+  std::vector<point> y_prime;
+  for (auto const& p : y) {
+    if (l_x - d <= p.x && p.x <= l_x + d) {
+      y_prime.push_back(p);
+    }
+  }
+  for (std::size_t i = 0; i < y.size(); ++i) {
+    std::size_t j = 0;
+    while (j <= 6 && i + j - 2 <= y_prime.size()) {
+      auto pair_4 = std::make_pair(y_prime[i], y_prime[i + j]);
+      auto d3 = distance(pair_4);  // unused:  this makes *no* sense
+      if (d1 < d) {
+        pair_3 = pair_4;
+        d = d1;
+      }
+      ++j;
+    }
+  }
+  return pair_3;
+}
+
+std::pair<point, point> find_closest_points(std::vector<point> x,
+                                            std::vector<point> y) {
+  // can this even terminate?
+  auto m = x.size() / 2;
+  auto l_x = (x[m].x + x[m + 1].x) / 2;
+  auto x_l = std::vector<point>(x.begin(), x.begin() + m);
+  auto x_r = std::vector<point>(x.begin() + m + 1, x.end());
+  auto pair_1 = find_closest_points(x_l, y);
+  auto pair_2 = find_closest_points(x_r, y);
+  auto pair_3 = combine(y, l_x, pair_1, pair_2);
+  auto d1 = distance(pair_1);
+  auto d2 = distance(pair_2);
+  auto d3 = distance(pair_3);
+  if (d1 <= d2 && d1 <= d3)
+    return pair_1;
+  else if (d2 <= d1 && d1 <= d3)
+    return pair_2;
+  else
+    return pair_3;
+}
+
+std::pair<point, point> find_closest_points(std::vector<point> points) {
+  // not to sure about this one
+  return find_closest_points(points, points);
+}
+
 /**
  * Naive O(n^2) algorithm for finding two closest points.
  * Used for verifying correctness of the efficient algorithm.
@@ -68,9 +127,8 @@ std::pair<point, point> closest_naive(std::vector<point> points) {
 int main() {
   auto points = random_points(30, {0.f, 0.f}, {1.f, 1.f});
   print_points(std::cout, points);
-  auto closest = closest_naive(points);
-  std::cout << "Closest points: "
-    << closest.first.x << " " << closest.first.y << ", "
-    << closest.second.x << " " << closest.second.y << "\n";
+  auto closest = find_closest_points(points);
+  std::cout << "Closest points: " << closest.first.x << " " << closest.first.y
+            << ", " << closest.second.x << " " << closest.second.y << "\n";
   return 0;
 }
