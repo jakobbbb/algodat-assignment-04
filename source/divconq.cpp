@@ -4,19 +4,24 @@
 #include <set>
 #include <cmath>
 
+/** 2D Point. */
 struct point {
   float x;
   float y;
 };
 
+/** Distance between two points. */
 float distance(std::pair<point, point> const& points) {
   auto [lhs, rhs] = points;
   return std::sqrt(std::pow(rhs.x - lhs.x, 2) + std::pow(rhs.y - lhs.y, 2));
 }
 
 /**
- * Note:  Since `std::set` is ordered but there is no meaningful way of ordering
- * (i. e. comparing) points, a `std::vector` is used here.
+ * Randomly generate a set of `n` points between `min` and `max`.
+ * Note: `std::set` is an ordered container, and thus requires elements to have
+ * a comparison operator.  Since no meaningful linear ordering exists for
+ * two-dimensional points (analogous to complex numbers), an `std::vector` is
+ * used here.
  */
 std::vector<point> random_points(std::size_t n, point min, point max) {
   std::vector<point> points;
@@ -30,15 +35,24 @@ std::vector<point> random_points(std::size_t n, point min, point max) {
   return points;
 }
 
+/**
+ * Print a set of points separated by newlines to `os`.  Individual coordinates
+ * are separated by spaces.
+ */
 std::ostream& print_points(std::ostream& os, std::vector<point> const& points) {
   for (auto const& p : points)
     os << p.x << ' ' << p.y << '\n';
   return os;
 }
 
-std::pair<point, point> naive(std::vector<point> points) {
-  if (points.size() < 2)
+/**
+ * Naive O(n^2) algorithm for finding two closest points.
+ * Used for verifying correctness of the efficient algorithm.
+ */
+std::pair<point, point> closest_naive(std::vector<point> points) {
+  if (points.size() < 2) {
     throw "Must have at least two points!";
+  }
   auto closest = std::make_pair(points[0], points[1]);
   for (auto const& p : points) {
     for (auto const& q : points) {
@@ -54,7 +68,7 @@ std::pair<point, point> naive(std::vector<point> points) {
 int main() {
   auto points = random_points(30, {0.f, 0.f}, {1.f, 1.f});
   print_points(std::cout, points);
-  auto closest = naive(points);
+  auto closest = closest_naive(points);
   std::cout << "Closest points: "
     << closest.first.x << " " << closest.first.y << ", "
     << closest.second.x << " " << closest.second.y << "\n";
