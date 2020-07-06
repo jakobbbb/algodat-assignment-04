@@ -22,7 +22,9 @@ float distance(std::pair<point, point> const& points);
 /**
  * Randomly generate a set of `n` points between `min` and `max`.
  */
-std::vector<point> random_points(std::size_t n, point min, point max);
+std::vector<point> random_points(std::size_t n,
+                                 point min = {0.f, 0.f},
+                                 point max = {1.f, 1.f});
 
 /**
  * Print a set of points separated by newlines to `os`.  Individual coordinates
