@@ -118,6 +118,9 @@ std::pair<point, point> closest(std::vector<point> x,
 }
 
 std::pair<point, point> closest(std::vector<point> points) {
+  if (points.size() < 2) {
+    throw "Must have at least two points!";
+  }
   return closest(points, {});
 }
 
