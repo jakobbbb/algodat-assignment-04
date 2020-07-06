@@ -1,28 +1,22 @@
+#include <cmath>
 #include <iostream>
 #include <ostream>
 #include <random>
 #include <set>
-#include <cmath>
+#include <cassert>
+#include "mergesort.hpp"
+#include "closest.hpp"
 
-/** 2D Point. */
-struct point {
-  float x;
-  float y;
-};
 
-/** Distance between two points. */
+bool operator<(point const& lhs, point const& rhs) {
+  return lhs.x < rhs.x;
+}
+
 float distance(std::pair<point, point> const& points) {
   auto [lhs, rhs] = points;
   return std::sqrt(std::pow(rhs.x - lhs.x, 2) + std::pow(rhs.y - lhs.y, 2));
 }
 
-/**
- * Randomly generate a set of `n` points between `min` and `max`.
- * Note: `std::set` is an ordered container, and thus requires elements to have
- * a comparison operator.  Since no meaningful linear ordering exists for
- * two-dimensional points (analogous to complex numbers), an `std::vector` is
- * used here.
- */
 std::vector<point> random_points(std::size_t n, point min, point max) {
   std::vector<point> points;
   for (std::size_t i = 0; i < n; ++i) {
@@ -35,20 +29,17 @@ std::vector<point> random_points(std::size_t n, point min, point max) {
   return points;
 }
 
-/**
- * Print a set of points separated by newlines to `os`.  Individual coordinates
- * are separated by spaces.
- */
+std::ostream& operator<<(std::ostream& os, point const& p) {
+  os << "(" << p.x << ", " << p.y << ")";
+  return os;
+}
+
 std::ostream& print_points(std::ostream& os, std::vector<point> const& points) {
   for (auto const& p : points)
     os << p.x << ' ' << p.y << '\n';
   return os;
 }
 
-/**
- * Naive O(n^2) algorithm for finding two closest points.
- * Used for verifying correctness of the efficient algorithm.
- */
 std::pair<point, point> closest_naive(std::vector<point> points) {
   if (points.size() < 2) {
     throw "Must have at least two points!";
@@ -69,6 +60,7 @@ std::pair<point, point> combine(std::vector<point> y,
                                 std::size_t l_x,
                                 std::pair<point, point> pair_1,
                                 std::pair<point, point> pair_2) {
+  y = mergesort(y);  // dunno
   auto d1 = distance(pair_1);
   auto d2 = distance(pair_2);
   auto pair_3 = pair_2;
@@ -83,6 +75,7 @@ std::pair<point, point> combine(std::vector<point> y,
       y_prime.push_back(p);
     }
   }
+  y_prime = mergesort(y_prime);  // dunno
   for (std::size_t i = 0; i < y.size(); ++i) {
     std::size_t j = 0;
     while (j <= 6 && i + j - 2 <= y_prime.size()) {
@@ -98,18 +91,20 @@ std::pair<point, point> combine(std::vector<point> y,
   return pair_3;
 }
 
-std::pair<point, point> find_closest_points(std::vector<point> x,
+std::pair<point, point> closest(std::vector<point> x,
                                             std::vector<point> y) {
   if (x.size() == 2)
     return std::make_pair(x[0], x[1]);
   if (x.size() == 3)
     return closest_naive(x);
+  x = mergesort(x);
   auto m = x.size() / 2;
   auto l_x = (x[m].x + x[m + 1].x) / 2;
   auto x_l = std::vector<point>(x.begin(), x.begin() + m);
-  auto x_r = std::vector<point>(x.begin() + m + 1, x.end());
-  auto pair_1 = find_closest_points(x_l, y);
-  auto pair_2 = find_closest_points(x_r, y);
+  auto x_r = std::vector<point>(x.begin() + m, x.end());
+  assert(x_l.size() + x_r.size() == x.size());
+  auto pair_1 = closest(x_l, y);
+  auto pair_2 = closest(x_r, y);
   auto pair_3 = combine(y, l_x, pair_1, pair_2);
   auto d1 = distance(pair_1);
   auto d2 = distance(pair_2);
@@ -122,20 +117,7 @@ std::pair<point, point> find_closest_points(std::vector<point> x,
     return pair_3;
 }
 
-std::pair<point, point> find_closest_points(std::vector<point> points) {
-  return find_closest_points(points, {});
+std::pair<point, point> closest(std::vector<point> points) {
+  return closest(points, {});
 }
 
-int main() {
-  auto points = random_points(30, {0.f, 0.f}, {1.f, 1.f});
-  print_points(std::cout, points);
-  auto naive = closest_naive(points);
-  std::cout << "Closest points (naive):\t" << naive.first.x << " "
-            << naive.first.y << ", " << naive.second.x << " " << naive.second.y
-            << " (d=" << distance(naive) << ")\n";
-  auto closest = find_closest_points(points);
-  std::cout << "Closest points: (d&q):\t" << closest.first.x << " "
-            << closest.first.y << ", " << closest.second.x << " "
-            << closest.second.y << " (d=" << distance(closest) << ")\n";
-  return 0;
-}
