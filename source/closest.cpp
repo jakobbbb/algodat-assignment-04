@@ -62,7 +62,6 @@ std::pair<point, point> combine(std::vector<point> y,
                                 std::size_t l_x,
                                 std::pair<point, point> pair_1,
                                 std::pair<point, point> pair_2) {
-  // y = mergesort_y(y);
   auto d1 = distance(pair_1);
   auto d2 = distance(pair_2);
   auto pair_3 = pair_2;
@@ -77,7 +76,6 @@ std::pair<point, point> combine(std::vector<point> y,
       y_prime.push_back(p);
     }
   }
-  y_prime = mergesort_y(y_prime);
   for (std::size_t i = 0; i < y.size(); ++i) {
     std::size_t j = 1;
     while (j <= 7 && i + j - 1 <= y_prime.size()) {
@@ -98,13 +96,12 @@ std::pair<point, point> closest(std::vector<point> x, std::vector<point> y) {
     return std::make_pair(x[0], x[1]);
   if (x.size() == 3)
     return closest_naive(x);
+  x = mergesort_x(x);
   y = mergesort_y(y);
   auto m = x.size() / 2;
   auto l_x = (x[m].x + x[m + 1].x) / 2;
   auto x_l = std::vector<point>(x.begin(), x.begin() + m);
   auto x_r = std::vector<point>(x.begin() + m, x.end());
-  x_l = mergesort_x(x_l);
-  x_r = mergesort_x(x_r);
   assert(x_l.size() + x_r.size() == x.size());
   auto pair_1 = closest(x_l, y);
   auto pair_2 = closest(x_r, y);
