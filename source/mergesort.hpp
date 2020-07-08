@@ -6,21 +6,20 @@
 
 template <typename Comparision>
 std::vector<point> mergesort(std::vector<point> const& c, Comparision less_eq) {
-	if(c.size()<=1) {
+  if (c.size() <= 1) {
     return c;
-	}
-	else {
-          std::size_t m = c.size() / 2;
-          auto c_l = std::vector<point>(c.begin(), c.begin() + m);
-          auto c_r = std::vector<point>(c.begin() + m, c.end());
-          mergesort(c_l, less_eq);
-          mergesort(c_r, less_eq);
-	}
+  } else {
+    std::size_t m = c.size() / 2;
+    auto c_l = std::vector<point>(c.begin(), c.begin() + m);
+    auto c_r = std::vector<point>(c.begin() + m, c.end());
+    mergesort(c_l, less_eq);
+    mergesort(c_r, less_eq);
+  }
 }
 template <typename Comparision>
 std::vector<point> merge(std::vector<point> const& c_l,
-    std::vector<point> const& c_r,
-    Comparision less_eq) {
+                         std::vector<point> const& c_r,
+                         Comparision less_eq) {
   std::size_t size = c_l.size() + c_r.size();
   auto c = std::vector<point>(size);
   std::size_t firstPos = 0;
@@ -42,9 +41,7 @@ std::vector<point> merge(std::vector<point> const& c_l,
     }
     targetPos++;
   }
-  
-  
-  
+
   return c;
 }
 

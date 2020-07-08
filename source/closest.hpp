@@ -1,10 +1,10 @@
 #ifndef CLOSEST_HPP
 #define CLOSEST_HPP
-#include <vector>
 #include <cmath>
 #include <iostream>
 #include <ostream>
 #include <random>
+#include <vector>
 #include "point.hpp"
 
 /**

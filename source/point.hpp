@@ -1,10 +1,10 @@
 #ifndef POINT_HPP
 #define POINT_HPP
-#include <vector>
 #include <cmath>
 #include <iostream>
 #include <ostream>
 #include <random>
+#include <vector>
 
 /** 2D Point. */
 struct point {

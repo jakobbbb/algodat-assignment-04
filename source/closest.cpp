@@ -7,7 +7,6 @@
 #include <set>
 #include "mergesort.hpp"
 
-
 std::pair<point, point> closest_naive(std::vector<point> points) {
   if (points.size() < 2) {
     throw "Must have at least two points!";
