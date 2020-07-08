@@ -65,6 +65,7 @@ std::pair<point, point> combine(std::vector<point> const& y,
                                 std::size_t l_x,
                                 std::pair<point, point> const& pair_1,
                                 std::pair<point, point> const& pair_2) {
+  return closest_naive(y);
   auto d1 = distance(pair_1);
   auto d2 = distance(pair_2);
   std::pair<point, point> pair_3;

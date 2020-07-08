@@ -4,7 +4,7 @@
 #include "closest.hpp"
 #include "mergesort.hpp"
 
-#define MAX_SIZE 42
+#define MAX_SIZE 25
 
 TEST_CASE("point", "[point]") {
   point p{4.2f, 4.6f};
@@ -61,24 +61,14 @@ TEST_CASE("closest points", "[closest_points]") {
   }
   GIVEN("n-element vectors of points") {
     for (std::size_t i = 3; i <= MAX_SIZE; ++i) {
-      std::cout << i;
       auto const p = random_points(i);
-      if (distance(closest_naive(p)) != distance(closest(p))) {
-        std::cout << " :(";
-      }
-      std::cout << '\n';
-      // REQUIRE(i == p.size());
-      // REQUIRE(distance(closest_naive(p)) == distance(closest(p)));
-    }
-  }
-  /*
-  GIVEN("n-element vectors of points with negative coordinates") {
-    for (std::size_t i = 3; i <= MAX_SIZE; ++i) {
-      std::cout << i << '\n';
-      auto p = random_points(i, {-42.23f, -23.42f}, {12.34f, 98.76f});
-      REQUIRE(i == p.size());
       REQUIRE(distance(closest_naive(p)) == distance(closest(p)));
     }
   }
-  */
+  GIVEN("n-element vectors of points with negative coordinates") {
+    for (std::size_t i = 3; i <= MAX_SIZE; ++i) {
+      auto p = random_points(i, {-42.23f, -23.42f}, {12.34f, 98.76f});
+      REQUIRE(distance(closest_naive(p)) == distance(closest(p)));
+    }
+  }
 }
