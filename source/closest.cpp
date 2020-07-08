@@ -78,7 +78,7 @@ std::pair<point, point> combine(std::vector<point> const& y,
   }
   std::vector<point> y_prime;
   for (auto const& p : y) {
-    /* if (l_x - d <= p.x && p.x <= l_x + d) */ {
+    if (l_x - d <= p.x || p.x <= l_x + d) {
       y_prime.push_back(p);
     }
   }
