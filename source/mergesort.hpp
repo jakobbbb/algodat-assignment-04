@@ -4,7 +4,7 @@ template <typename Container, typename Comparision>
 Container mergesort(Container const& c, Comparision less) {
   // TODO
   auto r{c};
-  std::sort(std::rbegin(r), std::rend(r), less);
+  std::sort(std::begin(r), std::end(r), less);
   return r;
 }
 

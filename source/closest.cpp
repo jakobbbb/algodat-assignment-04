@@ -1,12 +1,18 @@
+#include "closest.hpp"
+#include <cassert>
 #include <cmath>
 #include <iostream>
 #include <ostream>
 #include <random>
 #include <set>
-#include <cassert>
 #include "mergesort.hpp"
-#include "closest.hpp"
 
+bool operator==(point const& lhs, point const& rhs) {
+  auto eq_epsilon = [](float l, float r) -> bool {
+    return std::abs(l - r) < POINT_EQUALITY_EPSILON;
+  };
+  return eq_epsilon(lhs.x, rhs.x) && eq_epsilon(lhs.y, rhs.y);
+}
 
 float distance(std::pair<point, point> const& points) {
   auto [lhs, rhs] = points;
