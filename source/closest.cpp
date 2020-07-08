@@ -58,10 +58,13 @@ std::pair<point, point> closest_naive(std::vector<point> points) {
   return closest;
 }
 
-std::pair<point, point> combine(std::vector<point> y,
+/**
+ * Get the closest pair that is split across the two halves.
+ */
+std::pair<point, point> combine(std::vector<point> const& y,
                                 std::size_t l_x,
-                                std::pair<point, point> pair_1,
-                                std::pair<point, point> pair_2) {
+                                std::pair<point, point> const& pair_1,
+                                std::pair<point, point> const& pair_2) {
   auto d1 = distance(pair_1);
   auto d2 = distance(pair_2);
   std::pair<point, point> pair_3;
@@ -79,9 +82,9 @@ std::pair<point, point> combine(std::vector<point> y,
       y_prime.push_back(p);
     }
   }
-  for (std::size_t i = 1; i < y.size(); ++i) {
+  for (std::size_t i = 0; i < y.size(); ++i) {
     std::size_t j = 1;
-    while (j <= 7 && i + j <= y_prime.size()) {
+    while (j <= 7 && (i + j) < y_prime.size()) {
       auto pair_4 = std::make_pair(y_prime[i], y_prime[i + j]);
       auto d3 = distance(pair_4);
       if (d3 < d) {
@@ -94,13 +97,12 @@ std::pair<point, point> combine(std::vector<point> y,
   return pair_3;
 }
 
-std::pair<point, point> closest(std::vector<point> x, std::vector<point> y) {
+std::pair<point, point> closest(std::vector<point> const& x,
+                                std::vector<point> const& y) {
   if (x.size() == 2)
     return std::make_pair(x[0], x[1]);
   if (x.size() == 3)
     return closest_naive(x);
-  x = mergesort_x(x);
-  y = mergesort_y(y);
   std::size_t m = x.size() / 2;
   std::size_t l_x = (x[m].x + x[m + 1].x) / 2;
   auto x_l = std::vector<point>(x.begin(), x.begin() + m);
@@ -120,10 +122,9 @@ std::pair<point, point> closest(std::vector<point> x, std::vector<point> y) {
     return pair_3;
 }
 
-std::pair<point, point> closest(std::vector<point> points) {
+std::pair<point, point> closest(std::vector<point> const& points) {
   if (points.size() < 2) {
     throw "Must have at least two points!";
   }
-  return closest(points, {});
+  return closest(mergesort_x(points), mergesort_y(points));
 }
-

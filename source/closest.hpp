@@ -36,20 +36,21 @@ std::ostream& print_points(std::ostream& os, std::vector<point> const& points);
 /**
  * Find the two points that are closest together.
  */
-std::pair<point, point> closest(std::vector<point> points);
+std::pair<point, point> closest(std::vector<point> const& points);
 
 /**
  * Utility function for closest point algorithm.
  */
-std::pair<point, point> closest(std::vector<point> x, std::vector<point> y);
+std::pair<point, point> closest(std::vector<point> const& x,
+                                std::vector<point> const& y);
 
 /**
  * Utility function for closest point algorithm.
  */
-std::pair<point, point> combine(std::vector<point> y,
+std::pair<point, point> combine(std::vector<point> const& y,
                                 std::size_t l_x,
-                                std::pair<point, point> pair_1,
-                                std::pair<point, point> pair_2);
+                                std::pair<point, point> const& pair_1,
+                                std::pair<point, point> const& pair_2);
 
 /**
  * Naive O(n^2) algorithm for finding two closest points.
