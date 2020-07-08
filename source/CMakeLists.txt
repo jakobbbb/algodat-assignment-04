@@ -1,10 +1,14 @@
 add_executable(example
     example.cpp
+    mergesort.cpp
+    point.cpp
     closest.cpp
     )
 
 add_executable(tests
     tests.cpp
+    mergesort.cpp
+    point.cpp
     closest.cpp
     )
 
