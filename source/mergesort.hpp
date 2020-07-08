@@ -14,6 +14,7 @@ std::vector<point> mergesort(std::vector<point> const& c, Comparision less_eq) {
     auto c_r = std::vector<point>(c.cbegin() + m, c.cend());
     c_l = mergesort(c_l, less_eq);
     c_r = mergesort(c_r, less_eq);
+    return merge(c_l, c_r, less_eq);
   }
 }
 template <typename Comparision>
