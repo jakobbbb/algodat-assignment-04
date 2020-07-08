@@ -6,7 +6,7 @@ The following example shows 30 randomly generated points.
 The closest pair of points among these has been highlighted in red and
 connected with a line.
 
-![30 random points](doc/plot_0.svg)
+![30 random points](doc/plot_0.svg#)
 
 ## building
 ```sh
