@@ -65,7 +65,6 @@ std::pair<point, point> combine(std::vector<point> const& y,
                                 std::size_t l_x,
                                 std::pair<point, point> const& pair_1,
                                 std::pair<point, point> const& pair_2) {
-  return closest_naive(y);
   auto d1 = distance(pair_1);
   auto d2 = distance(pair_2);
   std::pair<point, point> pair_3;
@@ -83,13 +82,12 @@ std::pair<point, point> combine(std::vector<point> const& y,
       y_prime.push_back(p);
     }
   }
-  for (std::size_t i = 0; i < y.size(); ++i) {
+  for (std::size_t i = 0; i < y_prime.size(); ++i) {
     std::size_t j = 1;
     while (j <= 7 && (i + j) < y_prime.size()) {
-      auto pair_4 = std::make_pair(y_prime[i], y_prime[i + j]);
-      auto d3 = distance(pair_4);
+      auto d3 = distance(std::make_pair(y_prime[i], y_prime[i + j]));
       if (d3 < d) {
-        pair_3 = pair_4;
+        pair_3 = std::make_pair(y_prime[i], y_prime[i + j]);
         d = d3;
       }
       ++j;
