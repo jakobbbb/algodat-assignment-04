@@ -1,3 +1,5 @@
+#ifndef MERGESORT_HPP
+#define MERGESORT_HPP
 #include <algorithm>
 #include <vector>
 #include "closest.hpp"
@@ -21,3 +23,4 @@ std::vector<point> mergesort_y(std::vector<point> const& c) {
       return lhs.y < rhs.y;
       });
 }
+#endif  // MERGESORT_HPP

@@ -1,3 +1,5 @@
+#ifndef CLOSEST_HPP
+#define CLOSEST_HPP
 #include <vector>
 #include <cmath>
 #include <iostream>
@@ -57,3 +59,4 @@ std::pair<point, point> combine(std::vector<point> const& y,
  * Used for verifying correctness of the efficient algorithm.
  */
 std::pair<point, point> closest_naive(std::vector<point> points);
+#endif  // CLOSEST_HPP
