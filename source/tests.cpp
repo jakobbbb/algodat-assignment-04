@@ -4,7 +4,7 @@
 #include "closest.hpp"
 #include "mergesort.hpp"
 
-#define MAX_SIZE 25
+#define MAX_SIZE 250
 
 TEST_CASE("point", "[point]") {
   point p{4.2f, 4.6f};
