@@ -1,9 +1,20 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
+#include <cmath>
 #include "closest.hpp"
 #include "mergesort.hpp"
 
-#define MAX_I 30
+#define MAX_SIZE 42
+
+TEST_CASE("point", "[point]") {
+  point p{4.2f, 4.6f};
+  point q{4.2f, 4.6f};
+  point r{2.1f, -5.1f};
+  REQUIRE(p == q);
+  REQUIRE(0.f == distance(std::make_pair(p, q)));
+  REQUIRE(POINT_EQUALITY_EPSILON >
+          std::abs(distance(std::make_pair(p, r)) - 9.92472f));
+}
 
 TEST_CASE("mergesort", "[mergesort]") {
   GIVEN("a vector of points") {
@@ -49,7 +60,7 @@ TEST_CASE("closest points", "[closest_points]") {
     REQUIRE(distance(closest(p)) == distance(std::make_pair(p[0], p[1])));
   }
   GIVEN("n-element vectors of points") {
-    for (int i = 3; i <= MAX_I; ++i) {
+    for (std::size_t i = 3; i <= MAX_SIZE; ++i) {
       std::cout << i << '\n';
       auto const p = random_points(i);
       REQUIRE(i == p.size());
@@ -57,7 +68,7 @@ TEST_CASE("closest points", "[closest_points]") {
     }
   }
   GIVEN("n-element vectors of points with negative coordinates") {
-    for (int i = 3; i <= MAX_I; ++i) {
+    for (std::size_t i = 3; i <= MAX_SIZE; ++i) {
       std::cout << i << '\n';
       auto p = random_points(i, {-42.23f, -23.42f}, {12.34f, 98.76f});
       REQUIRE(i == p.size());

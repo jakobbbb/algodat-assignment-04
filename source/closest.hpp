@@ -11,7 +11,7 @@ struct point {
 };
 
 /** Test two points for equality. */
-#define POINT_EQUALITY_EPSILON 0.001f;
+#define POINT_EQUALITY_EPSILON 0.001f
 bool operator==(point const& lhs, point const& rhs);
 
 /** Print a point. */

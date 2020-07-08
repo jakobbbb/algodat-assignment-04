@@ -64,11 +64,14 @@ std::pair<point, point> combine(std::vector<point> y,
                                 std::pair<point, point> pair_2) {
   auto d1 = distance(pair_1);
   auto d2 = distance(pair_2);
-  auto pair_3 = pair_2;
-  auto d = d2;
+  std::pair<point, point> pair_3;
+  float d;
   if (d1 < d2) {
     pair_3 = pair_1;
     d = d1;
+  } else {
+    pair_3 = pair_2;
+    d = d2;
   }
   std::vector<point> y_prime;
   for (auto const& p : y) {
@@ -76,9 +79,9 @@ std::pair<point, point> combine(std::vector<point> y,
       y_prime.push_back(p);
     }
   }
-  for (std::size_t i = 0; i < y.size(); ++i) {
+  for (std::size_t i = 1; i < y.size(); ++i) {
     std::size_t j = 1;
-    while (j <= 7 && i + j - 1 <= y_prime.size()) {
+    while (j <= 7 && i + j <= y_prime.size()) {
       auto pair_4 = std::make_pair(y_prime[i], y_prime[i + j]);
       auto d3 = distance(pair_4);
       if (d3 < d) {
@@ -98,8 +101,8 @@ std::pair<point, point> closest(std::vector<point> x, std::vector<point> y) {
     return closest_naive(x);
   x = mergesort_x(x);
   y = mergesort_y(y);
-  auto m = x.size() / 2;
-  auto l_x = (x[m].x + x[m + 1].x) / 2;
+  std::size_t m = x.size() / 2;
+  std::size_t l_x = (x[m].x + x[m + 1].x) / 2;
   auto x_l = std::vector<point>(x.begin(), x.begin() + m);
   auto x_r = std::vector<point>(x.begin() + m, x.end());
   assert(x_l.size() + x_r.size() == x.size());
