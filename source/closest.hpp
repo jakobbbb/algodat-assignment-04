@@ -8,18 +8,19 @@
 #include "point.hpp"
 
 /**
- * Find the two points that are closest together.
+ * Find the two points within a vector of points that are closest together.
  */
 std::pair<point, point> closest(std::vector<point> const& points);
 
 /**
- * Utility function for closest point algorithm.
+ * Closest point algorithm, expecting the same vector of points as parameters,
+ * sorted by x coordinate and y coordinate respectively,
  */
 std::pair<point, point> closest(std::vector<point> const& x,
                                 std::vector<point> const& y);
 
 /**
- * Utility function for closest point algorithm.
+ * Get the closest pair that is split across the two halves.
  */
 std::pair<point, point> combine(std::vector<point> const& y,
                                 std::size_t l_x,

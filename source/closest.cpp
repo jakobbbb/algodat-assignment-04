@@ -23,9 +23,6 @@ std::pair<point, point> closest_naive(std::vector<point> points) {
   return closest;
 }
 
-/**
- * Get the closest pair that is split across the two halves.
- */
 std::pair<point, point> combine(std::vector<point> const& y,
                                 float l_x,
                                 std::pair<point, point> const& pair_1,
@@ -72,9 +69,9 @@ std::pair<point, point> closest(std::vector<point> const& x,
   auto x_l = std::vector<point>(x.begin(), x.begin() + m);
   auto x_r = std::vector<point>(x.begin() + m, x.end());
   assert(x_l.size() + x_r.size() == x.size());
-  auto pair_1 = closest(x_l, y);
-  auto pair_2 = closest(x_r, y);
-  auto pair_3 = combine(y, l_x, pair_1, pair_2);
+  auto pair_1 = closest(x_l, y);                  // Closest pair might be
+  auto pair_2 = closest(x_r, y);                  // in one of the halves...
+  auto pair_3 = combine(y, l_x, pair_1, pair_2);  // ...or split across them.
   auto d1 = distance(pair_1);
   auto d2 = distance(pair_2);
   auto d3 = distance(pair_3);
